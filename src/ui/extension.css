@@ -1,0 +1,54 @@
+:root {
+  color-scheme: dark;
+  --ground: #000;
+  --surface: #111;
+  --raised: #2a2a2a;
+  --control: #575757;
+  --rule: #292929;
+  --text: #fff;
+  --muted: #b4b4b4;
+  --faint: #a0a0a0;
+  --accent: #c6f24e;
+  --error: #ff9b9e;
+  font: 16px/1.5 system-ui, sans-serif;
+  background: var(--ground);
+  color: var(--text);
+  accent-color: white;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 0; font: inherit; }
+h1, h2, p { margin: 0; }
+h1 { font-size: 20px; line-height: 1.15; font-weight: 650; letter-spacing: -.025em; }
+h2 { font-size: 20px; font-weight: 620; }
+a { color: var(--text); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+::selection { background: #d8e5bb; color: #141712; }
+button, select, input, textarea { font: inherit; }
+input[type='checkbox'] { inline-size: 17px; block-size: 17px; margin: 0; flex: none; }
+
+.button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 42px;
+  padding: 6px 13px; border: 1px solid var(--control); border-radius: 999px;
+  background: transparent; color: var(--text); font-weight: 610; cursor: pointer;
+}
+.button:hover { background: var(--raised); }
+.button:disabled { opacity: .53; cursor: not-allowed; }
+.button.primary { background: var(--text); color: #000; border-color: var(--text); }
+.button.primary:hover { background: #ddd; }
+.button.link { border-color: transparent; background: transparent; min-height: 32px; }
+.button.link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.field { display: flex; flex-direction: column; min-width: 0; gap: 7px; font-weight: 560; }
+.field > select, .field > input, .field > textarea {
+  min-height: 44px; min-width: 0; width: 100%; background: #161616; color: var(--text);
+  border: 1px solid var(--control); border-radius: 5px; padding: 7px 9px; font-weight: 450;
+}
+.field > textarea { resize: vertical; min-height: 74px; }
+.field small, .help { color: var(--muted); font-size: 14px; font-weight: 420; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.check { display: flex; gap: 9px; align-items: center; min-height: 32px; }
+.status { min-height: 20px; color: var(--muted); overflow-wrap: anywhere; }
+.status.error { color: var(--error); }
+.status.good { color: var(--accent); }
+.brand { display: flex; align-items: center; gap: 9px; }
+.mark { display: block; flex: none; }

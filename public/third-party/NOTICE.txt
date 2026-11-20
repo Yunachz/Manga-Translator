@@ -1,0 +1,27 @@
+Manga Translator — third-party notices
+
+PP-OCRv5 mobile text detection and recognition models and dictionaries:
+PaddlePaddle / PaddleOCR contributors. Apache License 2.0.
+https://github.com/PaddlePaddle/PaddleOCR
+The asset installer pins the original ONNX exports and serializes the ordered
+recognition dictionaries as JSON. Source identifiers and hashes are recorded in
+scripts/model-sources.json in the source repository.
+
+ONNX Runtime Web:
+Copyright (c) Microsoft Corporation. MIT License.
+https://github.com/microsoft/onnxruntime
+See ONNX-Runtime-LICENSE.txt.
+Additional upstream notices are available with the ONNX Runtime source.
+
+Svelte:
+MIT License. See Svelte-LICENSE.md.
+
+Optional weights, when included by the person building this package:
+- Panel detector exported by mednasserallah from AlekseyCalvin's YOLO26n
+  Manga Panel Detector. The original model used the Manga109-s annotations.
+  https://huggingface.co/mednasserallah/manga-panel-detector-yolo26n-onnx
+- LaMa export by sapienkit from the original LaMa project by Suvorov et al.
+  The training dataset referenced by the export is Places2.
+  https://huggingface.co/sapienkit/LaMa-ONNX
+Both export cards list Apache License 2.0. Refer to the pinned model cards for
+upstream attribution and verify redistribution rights for the intended use.

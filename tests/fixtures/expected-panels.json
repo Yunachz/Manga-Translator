@@ -1,0 +1,42 @@
+{
+  "imageSize": { "width": 1000, "height": 1200 },
+  "coordinateSystem": {
+    "origin": "Top-left of the rendered image content",
+    "bounds": "[left / image width, top / image height, width / image width, height / image height]",
+    "point": "[x / image width, y / image height]",
+    "precision": "Repeating fractions rounded to six decimal places"
+  },
+  "pages": {
+    "page-a.png": {
+      "readingOrder": ["A1", "A2", "A3", "A4"],
+      "panels": [
+        { "id": "A1", "position": "top right", "bounds": [0.52, 0.05, 0.42, 0.40], "click": [0.73, 0.166667], "text": "行こう！", "language": "ja" },
+        { "id": "A2", "position": "top left", "bounds": [0.06, 0.05, 0.42, 0.40], "click": [0.27, 0.166667], "text": "THE LIGHT IS ON.", "language": "en" },
+        { "id": "A3", "position": "bottom right", "bounds": [0.52, 0.50, 0.42, 0.45], "click": [0.73, 0.633333], "text": "星が見える。", "language": "ja" },
+        { "id": "A4", "position": "bottom left", "bounds": [0.06, 0.50, 0.42, 0.45], "click": [0.27, 0.633333], "text": "WAIT FOR ME!", "language": "en" }
+      ],
+      "outsidePanels": [
+        { "position": "top-row vertical gutter", "click": [0.50, 0.25] },
+        { "position": "horizontal gutter", "click": [0.73, 0.475] },
+        { "position": "left page margin", "click": [0.03, 0.25] }
+      ]
+    },
+    "page-b.png": {
+      "readingOrder": ["B1", "B2", "B3"],
+      "panels": [
+        { "id": "B1", "position": "full-width top", "bounds": [0.06, 0.05, 0.88, 0.40], "click": [0.66, 0.166667], "text": "船が来た！", "language": "ja" },
+        { "id": "B2", "position": "bottom right", "bounds": [0.62, 0.50, 0.32, 0.45], "click": [0.78, 0.633333], "text": "OVER HERE!", "language": "en" },
+        { "id": "B3", "position": "bottom left", "bounds": [0.06, 0.50, 0.50, 0.45], "click": [0.325, 0.633333], "text": "波が高い。", "language": "ja" }
+      ],
+      "outsidePanels": [
+        { "position": "bottom-row vertical gutter", "click": [0.59, 0.633333] },
+        { "position": "horizontal gutter", "click": [0.73, 0.475] },
+        { "position": "left page margin", "click": [0.03, 0.25] }
+      ]
+    }
+  },
+  "swapProbes": [
+    { "click": [0.50, 0.25], "pageA": null, "pageB": "B1" },
+    { "click": [0.59, 0.633333], "pageA": "A3", "pageB": null }
+  ]
+}

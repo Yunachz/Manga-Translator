@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manga Translator QA reader</title>
+  <style>
+    body { margin: 0; font: 1rem / 1.5 system-ui, sans-serif; color: #1c1c1c; background: #e9e9e9; }
+    main { max-width: 800px; margin: 0 auto; padding: 1rem; }
+    h1 { margin-top: 0; }
+    h2 { margin: 0 0 .5rem; }
+    .controls { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-bottom: 1.5rem; }
+    button { font: inherit; }
+    img { display: block; width: 100%; height: auto; }
+    #plain-reader { min-height: 110vh; padding-bottom: 2rem; }
+    #picture-reader { scroll-margin-top: 1rem; }
+    #picture-status { margin: 0 0 .5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Manga Translator QA reader</h1>
+    <div class="controls">
+      <button id="queue-page-b" type="button">Queue Page B</button>
+      <a href="#picture-reader">Go to picture reader</a>
+    </div>
+    <section id="plain-reader">
+      <h2>Plain image</h2>
+      <img id="plain-page" src="./page-a.png" alt="Synthetic manga page A" width="1000" height="1200">
+    </section>
+    <section id="picture-reader">
+      <h2>Picture with lazy source swap</h2>
+      <p id="picture-status" role="status">Page A selected</p>
+      <picture>
+        <source id="picture-source" type="image/png" srcset="./page-a.png">
+        <img id="picture-page" src="./page-a.png?fallback" alt="Synthetic manga page A" width="1000" height="1200" loading="lazy">
+      </picture>
+    </section>
+  </main>
+  <script>
+    const queueButton = document.getElementById('queue-page-b');
+    const pictureSource = document.getElementById('picture-source');
+    const picturePage = document.getElementById('picture-page');
+    const pictureStatus = document.getElementById('picture-status');
+
+    picturePage.addEventListener('load', () => {
+      if (new URL(picturePage.currentSrc).pathname.endsWith('/page-b.png')) {
+        picturePage.alt = 'Synthetic manga page B';
+        pictureStatus.textContent = 'Page B loaded';
+      }
+    });
+
+    picturePage.addEventListener('error', () => {
+      pictureStatus.textContent = 'Picture failed to load';
+    });
+
+    const lazySwap = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      lazySwap.disconnect();
+      pictureStatus.textContent = 'Loading Page B';
+      pictureSource.srcset = './page-b.png';
+    });
+
+    queueButton.addEventListener('click', () => {
+      queueButton.disabled = true;
+      queueButton.textContent = 'Page B queued';
+      pictureStatus.textContent = 'Page B queued';
+      lazySwap.observe(picturePage);
+    });
+  </script>
+</body>
+</html>

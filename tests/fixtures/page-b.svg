@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1200" viewBox="0 0 1000 1200">
+  <title>Signal on the hill, page B</title>
+  <desc>Three panels. A wide boat panel followed by two smaller panels at the dock.</desc>
+  <style>
+    .panel { stroke: #181818; stroke-width: 8; }
+    .ink { stroke: #202020; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+    .bubble { fill: #fff; stroke: #181818; stroke-width: 6; stroke-linejoin: round; }
+    .speech { fill: #111; font: 700 36px 'DejaVu Sans', sans-serif; text-anchor: middle; }
+    .ja { font-family: 'Noto Sans CJK JP', sans-serif; }
+  </style>
+  <rect width="1000" height="1200" fill="#fff"/>
+
+  <!-- B1 spans the top row. Page A's vertical gutter is inside this panel. -->
+  <g transform="translate(60 60)">
+    <rect class="panel" x="4" y="4" width="872" height="472" fill="#d0d0d0"/>
+    <circle cx="166" cy="121" r="67" fill="#f5f5f5"/>
+    <path d="M8 342l128-64 100 40 102-67 156 55 93-25 127 31 158-66v121H8Z" fill="#9f9f9f"/>
+    <path d="M8 354h864v118H8Z" fill="#757575"/>
+    <path d="M32 390h143m-73 48h173m365-22h194m-149 26h127m-466 9h202" stroke="#cdcdcd" stroke-width="6" stroke-linecap="round"/>
+    <path class="ink" d="M301 354h304l-51 67H374Z" fill="#363636"/>
+    <path class="ink" d="M372 354l15-78h130l63 78Z" fill="#f3f3f3"/>
+    <path class="ink" d="M425 276v-44h52v44m-72 40h32m38 0h32" fill="none"/>
+    <path class="bubble" d="M438 77q0-25 28-25h267q28 0 28 25v102q0 25-28 25H540l-47 46 12-46h-39q-28 0-28-25Z"/>
+    <text class="speech ja" x="600" y="153" lang="ja">船が来た！</text>
+  </g>
+
+  <!-- B2, narrow bottom right. Hand raised at the dock. -->
+  <g transform="translate(620 600)">
+    <rect class="panel" x="4" y="4" width="312" height="532" fill="#d9d9d9"/>
+    <path d="M8 357h304v175H8Z" fill="#969696"/>
+    <path d="M8 447l304-61v146H8Z" fill="#777"/>
+    <path class="ink" d="M77 500q8-92 30-134l84 6q36 40 45 128Z" fill="#444"/>
+    <path class="ink" d="M181 393l56-84 2-47 18-5 17 51-42 115Z" fill="#e4e4e4"/>
+    <ellipse class="ink" cx="152" cy="328" rx="48" ry="52" fill="#f7f7f7"/>
+    <path class="ink" d="M105 320q2-54 47-46 45 3 47 49-29-9-43-30-15 25-51 27Z" fill="#343434"/>
+    <path class="ink" d="M147 333h2m25 0h2m-22 21q11 6 21-4" fill="none"/>
+    <path class="bubble" d="M34 104q0-25 25-25h202q25 0 25 25v96q0 25-25 25h-71l-34 34 7-34H59q-25 0-25-25Z"/>
+    <text class="speech" x="160" y="174" style="font-size:31px">OVER HERE!</text>
+  </g>
+
+  <!-- B3, wide bottom left. Waves rolling past a mooring post. -->
+  <g transform="translate(60 600)">
+    <rect class="panel" x="4" y="4" width="492" height="532" fill="#a5a5a5"/>
+    <path d="M8 387q62 24 132-24 58-39 112-6 58 36 111 2 69-45 129-58v231H8Z" fill="#737373"/>
+    <path d="M8 443q96 24 177-27 53-33 111-6 34 16 103-16 35-16 93-27v165H8Z" fill="#414141"/>
+    <path d="M26 431q88 12 150-32 51-35 103-8m64 35q66-12 125-55M157 482q49-24 95-20" fill="none" stroke="#f2f2f2" stroke-width="6" stroke-linecap="round"/>
+    <path class="ink" d="M44 502l13-198 50 5 12 196Z" fill="#505050"/>
+    <ellipse class="ink" cx="82" cy="306" rx="26" ry="13" fill="#bdbdbd"/>
+    <path d="M52 348q29 15 57-4m-58 18q28 13 60-4m-59 18q31 11 59-4" fill="none" stroke="#d7d7d7" stroke-width="7" stroke-linecap="round"/>
+    <path class="bubble" d="M104 101q0-25 28-25h266q28 0 28 25v102q0 25-28 25H243l-45 32 12-32h-78q-28 0-28-25Z"/>
+    <text class="speech ja" x="265" y="173" lang="ja">波が高い。</text>
+  </g>
+</svg>

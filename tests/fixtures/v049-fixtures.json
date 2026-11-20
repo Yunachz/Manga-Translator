@@ -1,0 +1,200 @@
+{
+ "outlined-captions.png": {
+  "size": [
+   1266,
+   550
+  ],
+  "groups": {
+   "top-right": {
+    "text": "FROM WHAT I CAN TELL...",
+    "lines": [
+     "FROM WHAT",
+     "I CAN TELL..."
+    ],
+    "boxes": [
+     [
+      861,
+      70,
+      278,
+      40
+     ],
+     [
+      856,
+      116,
+      288,
+      40
+     ]
+    ]
+   },
+   "left": {
+    "text": "...OF AN ANCIENT CIVILIZATION, NO LONGER IN USE...!",
+    "lines": [
+     "...OF AN",
+     "ANCIENT",
+     "CIVILIZATION,",
+     "NO LONGER",
+     "IN USE...!"
+    ],
+    "boxes": [
+     [
+      137,
+      165,
+      185,
+      40
+     ],
+     [
+      132,
+      211,
+      197,
+      40
+     ],
+     [
+      74,
+      257,
+      311,
+      40
+     ],
+     [
+      98,
+      303,
+      264,
+      40
+     ],
+     [
+      123,
+      349,
+      215,
+      40
+     ]
+    ]
+   },
+   "center": {
+    "text": "THERE IS NO QUESTION THAT THESE ARE RELICS...",
+    "lines": [
+     "THERE IS NO",
+     "QUESTION THAT",
+     "THESE ARE",
+     "RELICS..."
+    ],
+    "boxes": [
+     [
+      647,
+      210,
+      285,
+      40
+     ],
+     [
+      609,
+      256,
+      361,
+      40
+     ],
+     [
+      666,
+      302,
+      247,
+      40
+     ],
+     [
+      690,
+      348,
+      201,
+      40
+     ]
+    ]
+   }
+  },
+  "controls": {
+   "star": [
+    125,
+    425,
+    90,
+    90
+   ],
+   "pillar": [
+    1146,
+    296,
+    88,
+    248
+   ]
+  }
+ },
+ "joined-balloons.png": {
+  "size": [
+   1800,
+   1300
+  ],
+  "groups": {
+   "left": {
+    "lines": [
+     "WHY",
+     "WERE YOU",
+     "TALKING",
+     "TO EMPTY",
+     "SPACE?!"
+    ],
+    "boxes": [
+     [
+      888,
+      300,
+      224,
+      84
+     ],
+     [
+      751,
+      405,
+      499,
+      84
+     ],
+     [
+      798,
+      510,
+      405,
+      84
+     ],
+     [
+      761,
+      615,
+      479,
+      84
+     ],
+     [
+      807,
+      720,
+      385,
+      84
+     ]
+    ],
+    "text": "WHY WERE YOU TALKING TO EMPTY SPACE?!"
+   },
+   "right": {
+    "lines": [
+     "EXPLAIN",
+     "YOUR-",
+     "SELF!"
+    ],
+    "boxes": [
+     [
+      1225,
+      150,
+      404,
+      84
+     ],
+     [
+      1279,
+      250,
+      297,
+      84
+     ],
+     [
+      1293,
+      350,
+      267,
+      84
+     ]
+    ],
+    "text": "EXPLAIN YOUR- SELF!"
+   }
+  }
+ }
+}

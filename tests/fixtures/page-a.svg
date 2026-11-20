@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1200" viewBox="0 0 1000 1200">
+  <title>Signal on the hill, page A</title>
+  <desc>Four panels. Two Japanese speech bubbles and two English speech bubbles.</desc>
+  <style>
+    .panel { stroke: #181818; stroke-width: 8; }
+    .ink { stroke: #202020; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+    .bubble { fill: #fff; stroke: #181818; stroke-width: 6; stroke-linejoin: round; }
+    .speech { fill: #111; font: 700 36px 'DejaVu Sans', sans-serif; text-anchor: middle; }
+    .ja { font-family: 'Noto Sans CJK JP', sans-serif; }
+  </style>
+  <rect width="1000" height="1200" fill="#fff"/>
+
+  <!-- A1, top right. Rounded silhouette and downhill path. -->
+  <g transform="translate(520 60)">
+    <rect class="panel" x="4" y="4" width="412" height="472" fill="#dadada"/>
+    <path d="M8 332L92 276l72 40 52-48 196 70v134H8Z" fill="#bcbcbc"/>
+    <path d="M8 392L129 338l56 12 95-65 132 29v158H8Z" fill="#808080"/>
+    <path d="M159 472q10-60 129-93 65-23 74-74-35 43-97 61-100 28-161 106Z" fill="#ececec"/>
+    <path class="ink" d="M147 443q3-80 18-112l62 1q20 36 26 111Z" fill="#333"/>
+    <ellipse class="ink" cx="191" cy="302" rx="42" ry="47" fill="#f6f6f6"/>
+    <path class="ink" d="M150 301q-8-46 40-54 46 1 53 38-37-16-63 9-16 12-30 7Z" fill="#424242"/>
+    <path class="ink" d="M202 310h2m20-1h2m-21 22q10 3 17-3" fill="none"/>
+    <path class="bubble" d="M68 80Q68 55 98 55h224q30 0 30 25v89q0 25-30 25H228l-34 32 9-32H98q-30 0-30-25Z"/>
+    <text class="speech ja" x="210" y="153" lang="ja">行こう！</text>
+  </g>
+
+  <!-- A2, top left. Light from a tower. -->
+  <g transform="translate(60 60)">
+    <rect class="panel" x="4" y="4" width="412" height="472" fill="#b6b6b6"/>
+    <path d="M8 345Q65 315 133 358T253 361T412 323V472H8Z" fill="#777"/>
+    <path d="M8 438l142-32 101 24 161-45v87H8Z" fill="#4f4f4f"/>
+    <path d="M139 279L8 248v81L139 298Zm43 0 230-55v103l-230-29Z" fill="#f3f3f3"/>
+    <path class="ink" d="M121 417l16-116h49l16 116Z" fill="#e3e3e3"/>
+    <rect class="ink" x="132" y="269" width="59" height="33" fill="#fafafa"/>
+    <path class="ink" d="M125 268l37-34 36 34Z" fill="#333"/>
+    <path class="ink" d="M161 274v24m-9 118v-34h20v34" fill="none"/>
+    <path class="bubble" d="M67 80Q67 53 96 53h229q29 0 29 27v101q0 25-29 25H179l-36 25 9-25H96q-29 0-29-25Z"/>
+    <text class="speech" x="210" y="117">THE LIGHT<tspan x="210" dy="43">IS ON.</tspan></text>
+  </g>
+
+  <!-- A3, bottom right. Night sky over the ridge. -->
+  <g transform="translate(520 600)">
+    <rect class="panel" x="4" y="4" width="412" height="532" fill="#626262"/>
+    <path d="M8 435l82-44 66 26 107-79 149 102v92H8Z" fill="#9c9c9c"/>
+    <path d="M8 470l101-19 81 31 104-41 118 26v65H8Z" fill="#343434"/>
+    <path d="M88 242l6 19 19 6-19 6-6 19-6-19-19-6 19-6Zm174 55 4 12 12 4-12 4-4 12-4-12-12-4 12-4Zm77-75 7 20 20 7-20 7-7 20-7-20-20-7 20-7Z" fill="#fff"/>
+    <circle cx="171" cy="297" r="5" fill="#fff"/>
+    <circle cx="300" cy="202" r="4" fill="#fff"/>
+    <path class="bubble" d="M48 101Q48 76 75 76h270q27 0 27 25v102q0 25-27 25H219l-45 27 12-27H75q-27 0-27-25Z"/>
+    <text class="speech ja" x="210" y="172" lang="ja">星が見える。</text>
+  </g>
+
+  <!-- A4, bottom left. Runner on the path. -->
+  <g transform="translate(60 600)">
+    <rect class="panel" x="4" y="4" width="412" height="532" fill="#e1e1e1"/>
+    <path d="M8 410l126-78 89 31 101-14 88 22v161H8Z" fill="#a6a6a6"/>
+    <path d="M8 505l139-99 64-16-107 142H8Z" fill="#f8f8f8"/>
+    <path class="ink" d="M172 447l36-43 36 17 12 46m-49-63-30-48-42 5m46-6 25-30 36 18 36-36m-97 48 34 37 29 29" fill="none"/>
+    <circle class="ink" cx="201" cy="292" r="30" fill="#f9f9f9"/>
+    <path class="ink" d="M171 290q3-38 34-30 25 1 29 28-17-8-23-18-14 15-40 20Z" fill="#474747"/>
+    <path class="ink" d="M207 296h2m9 13 8-1" fill="none"/>
+    <path class="bubble" d="M66 102Q66 77 96 77h228q30 0 30 25v96q0 25-30 25H209l-26 32 0-32H96q-30 0-30-25Z"/>
+    <text class="speech" x="210" y="138">WAIT FOR<tspan x="210" dy="43">ME!</tspan></text>
+  </g>
+</svg>

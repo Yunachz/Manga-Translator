@@ -1,0 +1,30 @@
+node_modules/
+.output/
+.wxt/
+stats.html
+stats-*.json
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+coverage/
+*.tsbuildinfo
+.vitest-cache/
+test-results/
+playwright-report/
+
+# Local QA recordings, temporary browser profiles, and extracted builds.
+/.checkpoints/
+/.t/
+/.qb/
+/node-compile-cache/
+/manga-translator-0.2.1-chrome/
+/docs/CHECKPOINT-*.md
+/docs/CHAPTER-V040-PLAN.md
+/docs/CHAPTER-UX-QA.md
+/docs/READER-SELECTION-PLAN.md
+
+# Recreated by npm run models:setup from the checksummed asset lock.
+public/models/*.onnx
+public/models/rec-*.json
