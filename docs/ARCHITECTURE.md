@@ -1,55 +1,56 @@
-# Arsitektur Manga Translator
+# Manga Translator architecture
 
-Dokumen ini menetapkan kontrak implementasi dan urutan verifikasi. Extension Chromium MV3 mengubah panel yang diklik menjadi patch gambar lokal. Provider cloud menerima teks hasil OCR dan konteks teks yang diaktifkan pengguna.
+The Chromium MV3 extension turns a selected panel into a locally rendered image patch. Cloud providers receive the recognized text and any optional text context the user enables.
 
-## Batas modul
+[![Architecture diagram showing the reader, service worker, local inference, and optional cloud translation](architecture.svg)](architecture.svg)
 
-| Context | Tanggung jawab |
+## Module boundaries
+
+| Context | Responsibilities |
 | --- | --- |
-| Content script | Registry sumber halaman `<img>`, `<picture>`, dan canvas yang dikenali. Mengelola pemetaan koordinat, pemilihan manual, kontrol, dan canvas patch. |
-| Service worker | Validasi sender dan pesan, izin per origin, pengambilan gambar, antrean per browser, pengaturan, kredensial, provider dan status job. |
-| Offscreen document | Menjaga dedicated worker tetap tersedia, menjembatani RPC dan menjalankan Chrome Translator saat API tersedia di document. |
-| Inference worker | Decode dan crop, deteksi panel, OCR, reading order, mask, inpainting, typesetting dan encoding patch. |
-| Popup dan Options | Aktivasi tab, pemilihan bahasa, pengaturan, pemberian izin dan tes koneksi. |
+| Content script | Tracks eligible `<img>`, `<picture>`, and canvas reader pages. Handles coordinate mapping, manual selection, reader controls, and the canvas overlay. |
+| Service worker | Validates messages and senders. Manages per-origin permissions, image retrieval, the browser-wide job queue, settings, credentials, providers, and job status. |
+| Offscreen document | Hosts the dedicated worker, bridges RPC, and runs Chrome Translator when its API is available in the document. |
+| Inference worker | Decodes and crops images, detects panels, runs OCR, orders dialogue, prepares masks, cleans and replaces text, and encodes patches. |
+| Popup and Settings | Activate the reader in the current tab, select languages and providers, grant permissions, and test connections. |
 
-`src/types` memuat kontrak data yang dapat diserialisasi. `src/messaging` memuat pesan dan validasi input runtime. `src/core` memiliki modul independen untuk geometri, transport gambar, model, cache, pipeline dan provider. `src/entrypoints` merangkai runtime. `src/storage` memisahkan settings publik dan kredensial.
+`src/types` defines serializable contracts. `src/messaging` defines messages and validates runtime inputs. `src/core` contains independent modules for geometry, image transport, models, caching, the pipeline, and providers. `src/entrypoints` wires the runtime together. `src/storage` separates public settings from credentials.
 
-## Kontrak antarkomponen
+## Runtime contracts
 
-- `ImageDescriptor` membawa ID lokal, jenis sumber, alamat sumber dan dimensi intrinsik. Untuk canvas dan pilihan viewport, alamat menandai dokumen reader. Panel, pemilihan manual, dan posisi patch memakai geometri ternormalisasi terhadap sumber. Region OCR dan bubble memakai koordinat piksel crop untuk mask dan layout.
-- Content mengirim `PREFETCH`, `PROCESS_PANEL`, dan `CANCEL` dengan ID. Service worker mengirim panel map, tahap job, patch atau error. Port top-frame mengikat status dan hasil kepada dokumen pengirim. Pengaturan dan operasi kredensial memakai protokol terpisah dari port reader.
-- Dokumen offscreen menerima operasi bertipe deteksi, baca dan render. Blob masukan berpindah melalui IndexedDB sementara dan `postMessage` worker. Patch PNG dikirim melalui pesan ekstensi sebagai string data. Crop sementara dilepas saat sukses, gagal, maupun batal.
-- `TranslationRequest.segments` disusun menurut reading order. `TranslationResult` divalidasi terhadap himpunan ID sumber dan dikembalikan menurut urutan input. LLM menerima satu request terstruktur per panel. Provider lainnya dapat mengirim batch sesuai API.
-- Tindakan pengguna yang memerlukan tangkapan memakai `activeTab`. Service worker meminta snapshot geometri dari dokumen pengirim, memvalidasi tab dan geometri sebelum dan sesudah capture, lalu mengirim tangkapan ke inference worker untuk langsung dipotong. Hanya crop yang dipakai oleh cache dan pipeline. Panel hasil dipetakan kembali ke koordinat halaman atau area pilihan.
-- Inference worker memvalidasi mask per kelompok teks sebelum terjemahan. Satu kelompok yang gagal tetap asli, dan kelompok yang lolos dapat diproses. Jika semua kelompok gagal, job berhenti sebelum memanggil provider.
-- `JobQueue` menjalankan satu job aktif. Pembatalan adalah kooperatif untuk inference yang sedang berjalan. Cancel saat HTTP aktif menghentikan request. Hasil dari dokumen atau image source lama diabaikan.
-- Cache persisten memakai hash SHA-256 dari byte gambar dan identitas operasi. Versi model, geometri, bahasa, konfigurasi provider dan konteks menjadi bagian key yang relevan. Session model diinisialisasi sesuai penggunaan. Kredensial hanya melalui background dan trusted storage.
+- `ImageDescriptor` carries a local ID, source type, URL, and intrinsic dimensions. For canvas sources and viewport selections, the URL identifies the reader document. Panel, selection, and patch geometry is normalized to the source. OCR and bubble regions use crop pixel coordinates for masking and layout.
+- The content script sends `PREFETCH`, `PROCESS_PANEL`, and `CANCEL` with IDs. The service worker returns panel maps, job stages, patches, or errors. The top-frame port ties updates to the originating document. Settings and credentials use a separate protocol.
+- The offscreen document exposes typed detect, read, and render operations. Input blobs pass through temporary IndexedDB storage and worker `postMessage`. PNG patches travel across extension messages as data strings. Temporary crops are released after success, failure, or cancellation.
+- `TranslationRequest.segments` follows reading order. The pipeline validates `TranslationResult` against the original IDs and restores the input order. LLM providers receive one structured request per panel. Other providers can batch segments according to their API.
+- A user-initiated capture uses `activeTab`. The service worker requests a geometry snapshot, validates the tab and geometry before and after capture, and sends the pixels to the inference worker for immediate cropping. The pipeline and cache use the crop. Patch coordinates map back to the page or selection.
+- The inference worker validates masks per text group before translation. Groups with unsafe masks retain the original lettering. When every group fails, the job ends before calling the provider.
+- `JobQueue` runs one active job. Inference cooperates with cancellation. Cancelling an active HTTP step aborts the request. The reader ignores results from stale documents or image sources.
+- The persistent cache uses SHA-256 of image bytes and operation-specific inputs, such as model version, geometry, language, provider configuration, and context. Model sessions load on demand. Credentials stay in the background service worker and trusted storage.
 
-## Pemilihan sumber halaman
+## Page source selection
 
-`src/core/surface` mendefinisikan adapter, fakta elemen, dan keputusan apakah suatu sumber layak diproses. Adapter Comic Action mengenali slot canvas reader. Pada situs generik, pemrosesan otomatis membutuhkan gambar yang membentuk kelompok halaman berulang di dalam reader. Klik pengguna pada gambar tunggal tetap tersedia jika elemen tersebut memenuhi syarat dan tidak ditandai sebagai iklan, sampul, atau navigasi. Registry memakai aturan sumber yang sama untuk pemilihan, pre-detection, dan batch gambar generik.
+`src/core/surface` defines reader adapters, element properties, and source eligibility. Canvas adapters recognize reader page slots. Generic batch mode looks for groups of repeated page images inside the reader. A single eligible image can still be selected by clicking it. Ads, covers, and navigation are filtered from eligible sources. The registry uses the same rules for selection, pre-detection, and generic image batches.
 
-Canvas yang dapat dibaca disalin dari piksel yang sudah dirender. Canvas yang tidak dapat dibaca memakai tangkapan tab aktif setelah tindakan pengguna. Select area dapat dimulai tanpa elemen yang dikenali. Patch yang terikat ke halaman mengikuti geometri elemen. Patch yang terikat ke viewport kedaluwarsa saat tampilan atau dokumen berubah.
+The extension copies rendered pixels from readable canvases. If direct pixel reads fail, it can capture the active tab after a user action. **Select area** can start even when the extension has no recognized page element. Page-bound patches follow element geometry. Viewport-bound patches expire when the view or document changes.
 
-## Mode bab
+## Chapter mode
 
-`src/core/chapter` menangani sumber halaman, state job, dan pemulihan patch saat reader mengganti elemen gambar.
+`src/core/chapter` handles page sources, job state, and patch restoration when the reader replaces image elements.
 
-- Silent Witch membaca daftar halaman yang ditulis sebagai metadata inline milik reader. Daftar harus berurutan dan seluruh URL harus menunjuk ke path CDN bab aktif. Metadata dibaca sebagai teks.
-- MangaDex memakai endpoint At Home untuk manifest halaman dan memilih daftar data-saver sesuai gambar reader. Loader memvalidasi URL dasar, hash dan nama file. Akses API dan host CDN memakai izin origin yang sama dengan akuisisi gambar biasa.
-- Comic Action dan reader canvas dengan struktur yang sama menyediakan **Translate visible pages**. Mode ini membatasi antrean pada snapshot halaman yang terlihat. Sumber, identitas halaman, dan posisinya diperiksa kembali sebelum halaman dalam antrean dikerjakan.
-- Service worker mengikat sesi ke ID dokumen dan bab, mengambil snapshot pengaturan ketika pengguna memulai, lalu menjalankan halaman melalui JobQueue dan pipeline lokal yang sama. Hasil halaman disimpan di IndexedDB dan hanya referensi kecil yang disiarkan. Content script mengambil patch saat gambar cocok dan mendekati viewport. Patch terikat pada sumber dan identitas dokumen.
-- Navigasi ke bab lain membatalkan sesi. Pergantian halaman dalam bab yang sama mempertahankan sesi ketika dokumen yang sama masih dipakai. Jeda menyelesaikan halaman aktif. Penghentian membatalkan halaman aktif dan antrean.
-- Pada Silent Witch dan MangaDex, klik tanpa panel yang ditemukan dapat memilih dialog yang memuat titik klik. Seluruh proses deteksi dan verifikasi mask tetap berlangsung di worker. Pemilihan area tetap tersedia bila dialog tidak ditemukan atau mask gagal.
+- An inline-metadata adapter reads an ordered page list as text and validates that every URL points to the current chapter’s CDN path. An API adapter validates the base URL, hash, and filenames in a page manifest. It selects a reduced-size image list when the reader uses one and requests access to the API or image origin as needed.
+- Supported canvas readers offer **Translate visible pages**. The queue starts from a snapshot of visible pages and revalidates the source, page identity, and position before processing each page.
+- The service worker binds the session to a document and chapter ID, snapshots settings at start, and runs pages through the same local pipeline and `JobQueue`. IndexedDB stores patches, while messages carry small references. The content script retrieves each patch when a matching image nears the viewport.
+- Navigating to another chapter cancels the session. Switching pages within the same chapter can retain an active session when the reader keeps the same document. Pausing lets the active page finish. Stopping cancels the active page and the remaining queue.
+- On readers with dialog-level fallback, a click can select the text region under the pointer when the panel is unclear. Detection and mask validation still run in the worker. **Select area** remains available when the automatic selection or mask fails.
 
-[Rencana UX](CHAPTER-UX-PLAN.md) · [Panduan pengujian](../tests/QA-PLAN.md)
+[Chapter UX plan](CHAPTER-UX-PLAN.md) · [QA guide](../tests/QA-PLAN.md)
 
-## Milestone
+## Verification milestones
 
-1. Build MV3 dan aktivasi satu tab. Verifikasi registry, pemetaan klik natural, dan overlay responsif.
-2. Deteksi gutter pada fixture dan cache panel map. Verifikasi pemilihan titik, hover, dan fallback seleksi area.
-3. Jalankan OCR ONNX lokal. Verifikasi ordered segments, WASM, dan resolusi capability WebGPU.
-4. Sambungkan enam provider lewat manager. Verifikasi payload teks, kontrak ID, pemetaan error, izin, penyimpanan dan tes koneksi.
-5. Bersihkan glyph pada bubble, typeset, dan tampilkan patch. Verifikasi beberapa panel, original toggle, dan kegagalan yang menjaga gambar asli.
-6. Jalankan inpainting sesuai kompleksitas. Verifikasi fallback untuk model tambahan yang tidak terpasang.
-7. Uji retry, cancel, context, cache, privacy, dan kemas build unpacked. Dokumentasikan cakupan fixture, batas model dan pengujian layanan langsung.
+1. Build Manifest V3 and activate one tab. Verify the page registry, natural-image coordinate mapping, and responsive overlays.
+2. Verify gutter detection, panel caching, click selection, hover outlines, and manual selection fallback on fixtures.
+3. Verify local ONNX OCR, ordered segments, WASM inference, and WebGPU capability detection.
+4. Connect all six providers through the manager. Verify text payloads, segment IDs, error mapping, permissions, credential storage, and connection tests.
+5. Verify text removal, typesetting, and patch rendering across multiple panels. Test the original toggle and failures that preserve the original image.
+6. Verify adaptive inpainting and fallback when optional models are absent.
+7. Test retries, cancellation, context, cache, and privacy controls. Verify the unpacked build and document fixture coverage, model limitations, and live provider tests.

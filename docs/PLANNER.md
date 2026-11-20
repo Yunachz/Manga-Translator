@@ -1,5 +1,7 @@
 # Manga Translator implementation plan
 
+This plan records the initial implementation scope. See the [README](../README.md#how-to-use) for the current reader modes.
+
 Build a WXT, TypeScript and Svelte extension for Chromium MV3. Activate the reader in the current tab, click a panel, run local OCR, translate ordered text with the selected provider, erase source glyphs, then display a typeset patch over the original image. Escape cancels selection or an active job. The reader can reveal the original or clear individual patches.
 
 First release targets visible, loaded top-frame `<img>` and `<picture>` elements in HTTP(S) readers. Use natural image dimensions and click location. Prefer classical gutter detection and use an optional panel detector where it helps. Offer manual area selection when boundaries are ambiguous. Source OCR covers Japanese, Korean, Chinese and English. Full-chapter automation and cross-origin frames sit outside the first release.

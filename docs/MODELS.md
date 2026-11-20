@@ -1,6 +1,6 @@
 # Model assets
 
-Run from the repository root with Node.js 20 or later before building the extension.
+Run from the repository root with Node.js 22 or later before building the extension.
 
 ```sh
 node scripts/setup-models.mjs

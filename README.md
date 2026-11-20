@@ -54,9 +54,9 @@ Open **Settings** from the popup. Choose a **Translation provider**, **Source la
 
 | Reader | What the extension can process |
 | --- | --- |
-| MangaDex and Silent Witch | **Translate this chapter** uses the reader’s chapter page list. |
-| Image readers such as MangaKatana | **Translate loaded pages** uses detected pages already loaded in the reader. |
-| Comic Action and compatible canvas readers | **Translate visible pages** uses pages visible when you start. |
+| Readers with a supported chapter page list | **Translate this chapter** uses the reader’s chapter page list. |
+| Readers that display standard images | **Translate loaded pages** uses detected pages already loaded in the reader. |
+| Supported canvas readers | **Translate visible pages** uses pages visible when you start. |
 
 Choose **Review chapter translation** in the popup, check the page scope and language pair, then select **Start translation**. Grant image access if prompted. You can pause, stop, or retry failed pages.
 
@@ -65,13 +65,7 @@ Choose **Review chapter translation** in the popup, check the page scope and lan
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  R["Reader"] -->|Click or page queue| S["MV3 service worker"]
-  S <-->|Image, OCR, and patch| W["Offscreen inference worker"]
-  S <-->|OCR text and translation| T["Selected provider"]
-  S -->|Canvas overlay| R
-```
+[![Architecture diagram showing panel selection, local OCR, translation, and the rendered patch](docs/architecture.svg)](docs/architecture.svg)
 
 - **Content script** finds reader images, maps clicks to image coordinates, and displays the translated patch on a canvas overlay.
 - **Service worker** manages permissions, the job queue, providers, and the IndexedDB cache.

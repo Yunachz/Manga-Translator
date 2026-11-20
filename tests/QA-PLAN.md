@@ -90,19 +90,19 @@ Host access: Chromium cannot automate the optional host-permission prompt, and t
 Set `MANGA_EXTENSION_DIR` to test a build in another directory. Set `FLOW_TIMEOUT` (milliseconds) to shorten the wait for OCR flows.
 
 
-## Regresi pengambilan gambar
+## Image acquisition regression
 
-Jalankan `npm run test:e2e -- --grep 'HTTP 403'` setelah build. Fixture hanya mengizinkan request gambar dari elemen reader dan menolak fetch ulang dengan HTTP 403. Pengujian mengaktifkan **Pilih area terlihat**, menyeret panel Inggris, dan memeriksa OCR lokal, jumlah request, posisi patch, serta toggle gambar asli. Chrome menangkap tab dari profil sementara yang dipakai suite. Paket rilis memakai izin `activeTab` yang sudah digunakan untuk aktivasi.
+After building the extension, run `npm run test:e2e -- --grep 'HTTP 403'`. The fixture allows the reader's image element to load the image and returns HTTP 403 on a second fetch. The test selects a visible area, drags over a panel with English text, and checks local OCR, request count, patch placement, and the original-view toggle. Chromium captures the tab in the suite's temporary profile. The release uses the same `activeTab` permission for capture and activation.
 
-## Hasil v0.1.1 di reader live
+## Historical live-reader checks for v0.1.1
 
-Profil Chromium sementara memuat gambar asli dari reader. PaddleOCR dalam mode WASM mengenali teks Inggris, lalu endpoint tiruan mengembalikan teks Indonesia. Pengujian memeriksa posisi patch dan toggle gambar asli. Profil uji memberikan akses host terlebih dahulu.
+A temporary Chromium profile loaded images from live readers. PaddleOCR used WASM to recognize English text, and a mock endpoint returned Indonesian text. The checks covered patch placement and the original-view toggle. The test profile granted host access in advance.
 
-| Reader | Hasil |
+| Reader scenario | Result |
 | --- | --- |
-| [MangaFire, chapter 171](https://mangafire.to/title/ro8ro-all-class-awakening-god-slayer/chapter/9569470) | Tautan transparan di atas gambar tertangani dalam mode terjemahan. CDN menolak fetch ulang dengan HTTP 403. **Pilih area terlihat** berhasil pada kotak narasi yang dilaporkan. |
-| [Secrets of the Silent Witch, chapter 33](https://w2.secretsofthesilentwitch.online/chapters/33/) | Klik menghasilkan patch dengan tujuh kelompok teks. Tiga kelompok dengan mask yang ditolak tetap asli. Memilih balon yang dilaporkan secara manual juga menghasilkan patch. |
-| [MangaKatana, Onepunch-Man chapter 1](https://mangakatana.com/manga/onepunch-man.437/c1) | Klik menghasilkan patch dari teks Inggris pada halaman pengantar. Satu kelompok dengan mask yang ditolak tetap asli. |
-| [MangaDex](https://mangadex.org/) | Koneksi lingkungan uji mengalami kegagalan DNS/TLS sebelum reader dapat dibuka. |
+| Transparent link over an image with a restricted CDN | Panel mode handled the link. The second image fetch returned HTTP 403. Visible-area selection translated the reported caption. |
+| A page with several speech bubbles | A click produced a patch with seven text groups. Three groups with rejected masks remained original. Manually selecting the reported bubble also produced a patch. |
+| An introductory page with English lettering | A click produced a translated patch. One group with a rejected mask remained original. |
+| Reader unreachable from the test environment | A DNS/TLS failure occurred before the page opened. |
 
-Lint, typecheck, 496 pemeriksaan Vitest, 35 skenario Playwright, dan verifikasi isi ZIP lulus. Satu tes Vitest untuk kondisi build belum tersedia dilewati karena build sudah ada.
+Lint, type checks, 496 Vitest checks, 35 Playwright scenarios, and ZIP inspection passed. The suite skipped one Vitest check for the missing-build case because a build was present.

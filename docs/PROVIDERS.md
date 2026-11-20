@@ -1,18 +1,24 @@
-# Konfigurasi translator
+# Set up a translation provider
 
-Buka **Pengaturan** dari popup. Pilih provider dan pasangan bahasa. Untuk layanan cloud, masukkan key, berikan izin host, simpan, lalu klik **Tes koneksi**. Tes memakai satu contoh pendek dan dapat memakai kuota penyedia.
+Open **Settings** from the popup and choose a provider, source language, and target language. For a cloud provider, enter your own API key, select **Allow provider access**, save, and run **Test connection**. The test sends a short sample and may count toward your provider’s quota.
 
-| Provider | Key dan pengaturan | Endpoint |
+| Provider | Credentials and settings | Host |
 | --- | --- | --- |
-| Gemini API | API key Google AI Studio. Model awal `gemini-2.5-flash`. Ganti dengan model yang mendukung structured JSON bila perlu. | `generativelanguage.googleapis.com` |
-| OpenAI API | API key proyek OpenAI. Model awal `gpt-4.1-mini`. Model perlu mendukung Structured Outputs melalui Responses API. | `api.openai.com` |
-| Chrome Translator | Key tidak diperlukan. Provider muncul saat browser menyediakan API. Gunakan **Tes koneksi** untuk menyiapkan pasangan bahasa. | API browser |
-| Google Cloud Translation | Aktifkan Cloud Translation API dan billing pada proyek Cloud. Buat API key yang dapat memakai Cloud Translation Basic v2. | `translation.googleapis.com` |
-| DeepL API | API key paket DeepL API Free atau Pro. Pilih paket yang cocok di Options. | `api-free.deepl.com` atau `api.deepl.com` |
-| Azure Translator | Key resource Translator. Isi region untuk resource regional atau multi-service. | `api.cognitive.microsofttranslator.com` |
+| Gemini API | Use an API key from Google AI Studio. The extension defaults to `gemini-2.5-flash`. A custom model must support structured JSON output. | `generativelanguage.googleapis.com` |
+| OpenAI API | Use an OpenAI project API key. The extension defaults to `gpt-4.1-mini`. A custom model must support Structured Outputs through the Responses API. | `api.openai.com` |
+| Chrome Translator | Uses the browser’s built-in API where available. Run **Test connection** to prepare the selected language pair. | Browser API |
+| Google Cloud Translation | Enable Cloud Translation and billing for your Cloud project. Use an API key with access to Cloud Translation Basic v2. | `translation.googleapis.com` |
+| DeepL API | Use an API key for DeepL API Free or Pro and select the matching plan in **Settings**. | `api-free.deepl.com` or `api.deepl.com` |
+| Azure Translator | Use a Translator resource key. Enter the region for a regional or multi-service resource. | `api.cognitive.microsofttranslator.com` |
 
-Gemini dan OpenAI menerima satu request untuk semua dialog pada panel. ID setiap bubble diperiksa dan hasil dipetakan kembali ke urutan OCR. Opsi konteks dapat menambahkan judul seri, glosarium dalam format `istilah = terjemahan`, dan panel sebelumnya. Provider lainnya memakai batch standar atau penerjemah lokal. Bahasa yang tersedia bergantung pada penyedia.
+## Context and local translation
 
-Chrome Translator dapat mengunduh paket bahasa melalui browser. Pilih bahasa asal eksplisit dan uji pasangan tersebut di Pengaturan jika pasangan belum siap. Browser Chromium lain dapat menyembunyikan provider ini. Pilih salah satu provider cloud jika API lokal tidak tersedia.
+Gemini and OpenAI receive the dialogue in a panel as one structured request. The extension matches every response segment by bubble ID and restores the OCR order. You can include a series title, previous panel dialogue, or glossary entries in `term = translation` format. Other providers use standard translation batches or the browser’s local translator.
 
-Respons 401/403 atau error key yang dinyatakan provider ditampilkan sebagai masalah otorisasi. Error kuota dan rate limit dipisahkan ketika provider menyediakan kode yang membedakannya. Kegagalan tidak memproduksi patch. Perbaiki konfigurasi lalu klik **Coba lagi** di reader.
+Chrome Translator may download language packs through the browser. If a language pair is unavailable, choose the source language explicitly and test the pair in **Settings**. Choose a cloud provider if your browser lacks the built-in API. Supported language pairs vary by provider.
+
+## Troubleshooting
+
+HTTP 401/403 responses and provider-reported key errors appear as authorization failures. Quota and rate limits are reported separately when the provider distinguishes them. A failed request leaves the original panel visible. Correct the setting and select **Retry** in the reader.
+
+[Privacy and permissions](../README.md#privacy-and-permissions)
