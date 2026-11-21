@@ -65,7 +65,7 @@ Choose **Review chapter translation** in the popup, check the page scope and lan
 
 ## Architecture
 
-[![Architecture diagram showing panel selection, local OCR, translation, and the rendered patch](docs/architecture.svg)](docs/architecture.svg)
+[![Architecture diagram. Select a panel, get the image, read it locally, translate using the chosen provider, clean and typeset the patch, then display it in the reader.](docs/architecture.svg)](docs/architecture.svg)
 
 - **Content script** finds reader images, maps clicks to image coordinates, and displays the translated patch on a canvas overlay.
 - **Service worker** manages permissions, the job queue, providers, and the IndexedDB cache.
