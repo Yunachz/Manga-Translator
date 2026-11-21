@@ -1,96 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 1412" width="640" height="1412" role="img" aria-labelledby="t d" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
-  <title id="t">Manga Translator architecture</title>
-  <desc id="d">Six steps for a new job. 1: the reader tab content script sends a selected panel, area or visible pages to the service worker. 2: the service worker gets the image from a permitted URL, a readable page image or canvas, or a validated tab capture. 3: the offscreen document and inference worker find the panel and text, run OCR and check masks locally. 4: the service worker sends the recognized text to either Chrome Translator in the offscreen document or an optional cloud provider outside the browser, which receives text and language settings but no images. 5: the inference worker erases the original lettering, fits the translation and returns a PNG patch. 6: the content script draws the patch on the canvas overlay. IndexedDB holds a temporary source image copy and cached results. API keys stay in extension storage read by the service worker. A cache hit skips steps it already covers.</desc>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9aa7b6"/></marker>
-    <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f0bd57"/></marker>
-  </defs>
-  <rect width="640" height="1412" rx="16" fill="#12151a"/>
-  <text x="36" y="48" font-size="26" fill="#f1f4f8" font-weight="700">Manga Translator architecture</text>
-  <text x="36" y="76" font-size="16" fill="#aeb9c6">Images are processed in your browser.</text>
-  <text x="36" y="98" font-size="16" fill="#aeb9c6">Cloud options receive text and language settings.</text>
-  <path d="M30 116H610Q624 116 624 130V648H330V858H624V1338Q624 1352 610 1352H30Q16 1352 16 1338V130Q16 116 30 116Z" fill="#161a20" stroke="#6b7b8f" stroke-width="1.5" stroke-dasharray="7 6" stroke-linejoin="round"/>
-  <text x="36" y="142" font-size="15" fill="#aeb9c6" font-weight="700">Your Chromium browser</text>
-  <line x1="44" y1="200" x2="44" y2="296" stroke="#9aa7b6" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="44" y1="332" x2="44" y2="428" stroke="#9aa7b6" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="44" y1="464" x2="44" y2="560" stroke="#9aa7b6" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="44" y1="596" x2="44" y2="886" stroke="#9aa7b6" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="44" y1="922" x2="44" y2="1018" stroke="#9aa7b6" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <circle cx="44" cy="182" r="16" fill="#f1f4f8"/>
-  <text x="44" y="188.5" font-size="18" fill="#0d1117" font-weight="700" text-anchor="middle">1</text>
-  <circle cx="44" cy="314" r="16" fill="#f1f4f8"/>
-  <text x="44" y="320.5" font-size="18" fill="#0d1117" font-weight="700" text-anchor="middle">2</text>
-  <circle cx="44" cy="446" r="16" fill="#f1f4f8"/>
-  <text x="44" y="452.5" font-size="18" fill="#0d1117" font-weight="700" text-anchor="middle">3</text>
-  <circle cx="44" cy="578" r="16" fill="#f1f4f8"/>
-  <text x="44" y="584.5" font-size="18" fill="#0d1117" font-weight="700" text-anchor="middle">4</text>
-  <circle cx="44" cy="904" r="16" fill="#f1f4f8"/>
-  <text x="44" y="910.5" font-size="18" fill="#0d1117" font-weight="700" text-anchor="middle">5</text>
-  <circle cx="44" cy="1036" r="16" fill="#f1f4f8"/>
-  <text x="44" y="1042.5" font-size="18" fill="#0d1117" font-weight="700" text-anchor="middle">6</text>
-  <rect x="80" y="156" width="524" height="104" rx="14" fill="#192434" stroke="#5b8fdc" stroke-width="1.5"/>
-  <text x="96" y="189" font-size="20" fill="#f1f4f8" font-weight="700">Select</text>
-  <rect x="360" y="168" width="232" height="26" rx="13" fill="#7db1ff"/>
-  <text x="476.0" y="186" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Reader tab · content script</text>
-  <text x="96" y="218" font-size="16" fill="#d3dae3">Click a panel, or use Select area.</text>
-  <text x="96" y="241" font-size="16" fill="#d3dae3">Choose a batch action to queue pages.</text>
-  <rect x="80" y="288" width="524" height="104" rx="14" fill="#16261f" stroke="#3fa37a" stroke-width="1.5"/>
-  <text x="96" y="321" font-size="20" fill="#f1f4f8" font-weight="700">Queue and fetch the image</text>
-  <rect x="382" y="300" width="210" height="26" rx="13" fill="#62d3a4"/>
-  <text x="487.0" y="318" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Service worker · trusted</text>
-  <text x="96" y="350" font-size="16" fill="#d3dae3">Read a permitted URL, page image, or canvas.</text>
-  <text x="96" y="373" font-size="16" fill="#d3dae3">A validated tab capture is the fallback.</text>
-  <rect x="80" y="420" width="524" height="104" rx="14" fill="#211c33" stroke="#8f7ae0" stroke-width="1.5"/>
-  <text x="96" y="453" font-size="20" fill="#f1f4f8" font-weight="700">Read locally</text>
-  <rect x="352" y="432" width="240" height="26" rx="13" fill="#b7a5ff"/>
-  <text x="472.0" y="450" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Offscreen · inference worker</text>
-  <text x="96" y="482" font-size="16" fill="#d3dae3">Detect regions, run OCR, and order dialogue.</text>
-  <text x="96" y="505" font-size="16" fill="#d3dae3">Check mask safety · WebGPU or WASM.</text>
-  <rect x="80" y="552" width="524" height="70" rx="14" fill="#16261f" stroke="#3fa37a" stroke-width="1.5"/>
-  <text x="96" y="585" font-size="20" fill="#f1f4f8" font-weight="700">Translate</text>
-  <rect x="382" y="564" width="210" height="26" rx="13" fill="#62d3a4"/>
-  <text x="487.0" y="582" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Service worker · trusted</text>
-  <text x="96" y="610" font-size="16" fill="#d3dae3">Use the selected translation provider.</text>
-  <rect x="80" y="682" width="232" height="156" rx="14" fill="#211c33" stroke="#8f7ae0" stroke-width="1.5"/>
-  <rect x="130" y="694" width="170" height="26" rx="13" fill="#b7a5ff"/>
-  <text x="215.0" y="712" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Offscreen document</text>
-  <text x="96" y="746" font-size="20" fill="#f1f4f8" font-weight="700">Chrome Translator</text>
-  <text x="96" y="774" font-size="16" fill="#d3dae3">Local, when the browser</text>
-  <text x="96" y="796" font-size="16" fill="#d3dae3">provides it. Runs in the</text>
-  <text x="96" y="818" font-size="16" fill="#d3dae3">offscreen document.</text>
-  <rect x="348" y="682" width="256" height="156" rx="14" fill="#2a2216" stroke="#e0a93b" stroke-width="1.5"/>
-  <rect x="416" y="694" width="176" height="26" rx="13" fill="#f0bd57"/>
-  <text x="504.0" y="712" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Outside the browser</text>
-  <text x="364" y="746" font-size="20" fill="#f1f4f8" font-weight="700">Cloud provider</text>
-  <text x="364" y="774" font-size="16" fill="#d3dae3">Optional. Receives OCR text,</text>
-  <text x="364" y="796" font-size="16" fill="#d3dae3">language settings, and</text>
-  <text x="364" y="818" font-size="16" fill="#d3dae3">optional context.</text>
-  <line x1="196" y1="624" x2="196" y2="680" stroke="#9aa7b6" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-  <line x1="476" y1="624" x2="476" y2="680" stroke="#f0bd57" stroke-width="2.5" marker-start="url(#arrowAmber)" marker-end="url(#arrowAmber)"/>
-  <text x="208" y="664" font-size="15" fill="#aeb9c6">OCR text</text>
-  <text x="488" y="664" font-size="15" fill="#f6d58e" font-weight="700">text only</text>
-  <rect x="80" y="878" width="524" height="104" rx="14" fill="#211c33" stroke="#8f7ae0" stroke-width="1.5"/>
-  <text x="96" y="911" font-size="20" fill="#f1f4f8" font-weight="700">Clean and typeset</text>
-  <rect x="352" y="890" width="240" height="26" rx="13" fill="#b7a5ff"/>
-  <text x="472.0" y="908" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Offscreen · inference worker</text>
-  <text x="96" y="940" font-size="16" fill="#d3dae3">Builds masks and erases the original lettering,</text>
-  <text x="96" y="963" font-size="16" fill="#d3dae3">fits the translated text, and returns a PNG patch.</text>
-  <rect x="80" y="1010" width="524" height="104" rx="14" fill="#192434" stroke="#5b8fdc" stroke-width="1.5"/>
-  <text x="96" y="1043" font-size="20" fill="#f1f4f8" font-weight="700">Show the patch</text>
-  <rect x="360" y="1022" width="232" height="26" rx="13" fill="#7db1ff"/>
-  <text x="476.0" y="1040" font-size="14" fill="#0d1117" font-weight="700" text-anchor="middle">Reader tab · content script</text>
-  <text x="96" y="1072" font-size="16" fill="#d3dae3">The service worker returns the patch.</text>
-  <text x="96" y="1095" font-size="16" fill="#d3dae3">The canvas overlay draws it over the panel.</text>
-  <rect x="36" y="1142" width="568" height="186" rx="14" fill="#1a1f27" stroke="#4a586a" stroke-width="1.5"/>
-  <text x="52" y="1172" font-size="18" fill="#f1f4f8" font-weight="700">Stored in your browser</text>
-  <text x="52" y="1208" font-size="16" fill="#f1f4f8" font-weight="700">IndexedDB: temporary</text>
-  <text x="52" y="1232" font-size="15" fill="#d3dae3">Source image copy for the</text>
-  <text x="52" y="1253" font-size="15" fill="#d3dae3">inference worker. Deleted</text>
-  <text x="52" y="1274" font-size="15" fill="#d3dae3">when the job ends.</text>
-  <text x="330" y="1208" font-size="16" fill="#f1f4f8" font-weight="700">IndexedDB: cached results</text>
-  <text x="330" y="1232" font-size="15" fill="#d3dae3">Panel maps, OCR text,</text>
-  <text x="330" y="1253" font-size="15" fill="#d3dae3">translations and patches,</text>
-  <text x="330" y="1274" font-size="15" fill="#d3dae3">reused on repeat requests.</text>
-  <text x="52" y="1312" font-size="15" fill="#d3dae3">The service worker reads API keys from extension storage.</text>
-  <text x="36" y="1382" font-size="15" fill="#aeb9c6">Shown for a new job. A cache hit skips the steps it already covers.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 112" width="820" height="112" role="img" aria-labelledby="t d" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">Manga Translator flow</title>
+  <desc id="d">Left to right: Select panel in the reader tab, Load image in the service worker, Detect and OCR in the offscreen worker, Translate with Chrome or a cloud provider, Clean and typeset in the offscreen worker, then Show patch on the canvas overlay.</desc>
+  <style>
+    .box{fill:#fff;stroke:#1f2328;stroke-width:2}
+    .line{stroke:#1f2328;stroke-width:2;fill:none}
+    .head{fill:#1f2328;font-size:14px;font-weight:600;text-anchor:middle}
+    .sub{fill:#57606a;font-size:12px;text-anchor:middle}
+    .tip{fill:#1f2328}
+    @media (prefers-color-scheme: dark){.box{fill:#0d1117;stroke:#f0f6fc}.line{stroke:#f0f6fc}.tip{fill:#f0f6fc}.head{fill:#f0f6fc}.sub{fill:#c9d1d9}}
+  </style>
+  <rect class="box" x="8" y="8" width="114" height="96"/>
+  <text class="head" x="65.0" y="42">Select panel</text>
+  <text class="sub" x="65.0" y="92">Reader tab</text>
+  <line class="line" x1="122" y1="56.0" x2="139" y2="56.0"/>
+  <path class="tip" d="M146 56.0L137 51.0V61.0z"/>
+  <rect class="box" x="146" y="8" width="114" height="96"/>
+  <text class="head" x="203.0" y="42">Load image</text>
+  <text class="sub" x="203.0" y="78">MV3 service</text>
+  <text class="sub" x="203.0" y="92">worker</text>
+  <line class="line" x1="260" y1="56.0" x2="277" y2="56.0"/>
+  <path class="tip" d="M284 56.0L275 51.0V61.0z"/>
+  <rect class="box" x="284" y="8" width="114" height="96"/>
+  <text class="head" x="341.0" y="38">Detect</text>
+  <text class="head" x="341.0" y="55">and OCR</text>
+  <text class="sub" x="341.0" y="78">Offscreen</text>
+  <text class="sub" x="341.0" y="92">worker</text>
+  <line class="line" x1="398" y1="56.0" x2="415" y2="56.0"/>
+  <path class="tip" d="M422 56.0L413 51.0V61.0z"/>
+  <rect class="box" x="422" y="8" width="114" height="96"/>
+  <text class="head" x="479.0" y="42">Translate</text>
+  <text class="sub" x="479.0" y="78">Chrome or</text>
+  <text class="sub" x="479.0" y="92">cloud</text>
+  <line class="line" x1="536" y1="56.0" x2="553" y2="56.0"/>
+  <path class="tip" d="M560 56.0L551 51.0V61.0z"/>
+  <rect class="box" x="560" y="8" width="114" height="96"/>
+  <text class="head" x="617.0" y="38">Clean and</text>
+  <text class="head" x="617.0" y="55">typeset</text>
+  <text class="sub" x="617.0" y="78">Offscreen</text>
+  <text class="sub" x="617.0" y="92">worker</text>
+  <line class="line" x1="674" y1="56.0" x2="691" y2="56.0"/>
+  <path class="tip" d="M698 56.0L689 51.0V61.0z"/>
+  <rect class="box" x="698" y="8" width="114" height="96"/>
+  <text class="head" x="755.0" y="42">Show patch</text>
+  <text class="sub" x="755.0" y="78">Canvas</text>
+  <text class="sub" x="755.0" y="92">overlay</text>
 </svg>
